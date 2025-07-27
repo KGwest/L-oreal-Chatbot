@@ -79,8 +79,10 @@ async function getAIResponse(userMessage) {
   try {
     const response = await fetch("https://sweet-credit-1696.kezia-west.workers.dev", {
       method: "POST",
-      body: JSON.stringify({ messages }),
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ messages }) // THIS is key — must wrap it in `{ messages }`
     });
 
     const data = await response.json();
