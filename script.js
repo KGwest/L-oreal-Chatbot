@@ -37,30 +37,6 @@ function appendMessage(role, text) {
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-// Fetch AI response
-async function getAIResponse(userMessage) {
-  messages.push({ role: "user", content: userMessage });
-
-  try {
-    const response = await fetch(
-      "https://sweet-credit-1696.kezia-west.workers.dev",
-      {
-        method: "POST",
-        body: JSON.stringify({ messages }), // ✅ Send chat history
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    const data = await response.json();
-    const aiReply = data.reply || "🤖 Sorry, no response received.";
-    messages.push({ role: "assistant", content: aiReply });
-
-    return aiReply;
-  } catch (err) {
-    console.error("Worker fetch failed:", err);
-    return "🚨 There was a problem connecting to the chatbot.";
-  }
-}
 
 /* Intro overlay animation */
 window.addEventListener("load", () => {
