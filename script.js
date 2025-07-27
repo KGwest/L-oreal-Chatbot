@@ -15,19 +15,6 @@ let messages = [
 // Set initial message
 chatWindow.textContent = "👋 Hello! How can I help you today?";
 
-// Chat form submission
-chatForm.addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const userText = userInput.value.trim();
-  if (!userText) return;
-
-  appendMessage("user", userText);
-  userInput.value = "";
-
-  const botResponse = await getAIResponse(userText);
-  appendMessage("ai", botResponse);
-});
-
 // Append message to chat UI
 function appendMessage(role, text) {
   const msg = document.createElement("div");
@@ -36,7 +23,6 @@ function appendMessage(role, text) {
   chatWindow.appendChild(msg);
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
-
 
 /* Intro overlay animation */
 window.addEventListener("load", () => {
@@ -74,7 +60,7 @@ window.addEventListener("load", () => {
   localStorage.setItem("hasSeenIntro", "true");
 });
 
-// 👇 CHAT FUNCTIONALITY
+// CHAT FUNCTIONALITY
 chatForm.addEventListener("submit", async function (e) {
   e.preventDefault();
   const userText = userInput.value.trim();
@@ -86,14 +72,6 @@ chatForm.addEventListener("submit", async function (e) {
   const botResponse = await getAIResponse(userText);
   appendMessage("ai", botResponse);
 });
-
-function appendMessage(role, text) {
-  const msg = document.createElement("div");
-  msg.className = `msg ${role}`;
-  msg.textContent = text;
-  chatWindow.appendChild(msg);
-  chatWindow.scrollTop = chatWindow.scrollHeight;
-}
 
 async function getAIResponse(userMessage) {
   messages.push({ role: "user", content: userMessage });
@@ -115,4 +93,3 @@ async function getAIResponse(userMessage) {
     return "🚨 There was a problem connecting to the chatbot.";
   }
 }
-
