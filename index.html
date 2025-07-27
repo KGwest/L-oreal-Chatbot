@@ -4,33 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Assistant</title>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <!-- L'Oréal Loading Screen -->
-    <div id="introOverlay">
+    <div id="introOverlay" style="position: fixed; z-index: 9999; inset: 0; background: black;">
       <div class="circle-container">
         <svg viewBox="0 0 300 300" class="circle-art">
           <circle r="60" cx="150" cy="150"></circle>
@@ -42,11 +29,9 @@
         <div class="logo-text">L’<span class="optical-o">O</span>RÉAL</div>
         <div class="tagline">
           <span>C</span><span>r</span><span>e</span><span>a</span><span>t</span
-          ><span>i</span><span>n</span><span>g</span>
-          &nbsp;
+          ><span>i</span><span>n</span><span>g</span> &nbsp;
           <span>b</span><span>e</span><span>a</span><span>u</span><span>t</span
-          ><span>i</span><span>f</span><span>u</span><span>l</span>
-          &nbsp;
+          ><span>i</span><span>f</span><span>u</span><span>l</span> &nbsp;
           <span>m</span><span>o</span><span>m</span><span>e</span><span>n</span
           ><span>t</span><span>s</span>
         </div>
@@ -63,7 +48,7 @@
       <main>
         <section class="chatbox">
           <div id="chatWindow" class="chat-window">
-            <!-- messages will be appended here via JS -->
+            <!-- Messages appear here -->
           </div>
 
           <form id="chatForm" class="chat-form">
@@ -86,17 +71,27 @@
 
       <!------- Footer Links ------->
       <footer class="site-footer">
-        <p>&copy; 2025 Company Name. All rights reserved.</p>
+        <p>
+          &copy; 2025 Made by Kezia West. This is a student project and not affiliated with L'Oréal.
+        </p>
         <nav>
-          <!-- These URLs are placeholders -->
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
+<footer class="site-footer">
+  <p>
+    &copy; 2025 Made by Kezia West. This is a student project and not affiliated with L'Oréal.
+  </p>
+  <nav>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Contact</a>
+    <a href="https://github.com/KGwest/L-oreal-Chatbot" target="_blank" rel="noopener">GitHub Repo</a>
+  </nav>
+</footer>
+
         </nav>
       </footer>
     </div>
 
-    <!-- secrets.js can be removed when using Cloudflare Workers for API requests -->
+    <!-- Scripts -->
     <script src="secrets.js"></script>
     <script src="script.js"></script>
   </body>
