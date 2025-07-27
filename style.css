@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Playball&display=swap'); /* elegant fallback script */
+
+
+/* ——— Brand Colors ——— */
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --red: #ff003b;
+  --gold: #e3ae55;
+}
+
+
 /* —— basic reset —— */
 * {
   box-sizing: border-box;
@@ -7,10 +19,17 @@
 
 /* —— body + fonts —— */
 body {
-  font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  font-family: 'Poppins', "Montserrat", Arial, Helvetica, sans-serif;
+  color: var(--black);
+  background-color: var(--white);
   display: flex;
   justify-content: center;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .page-wrapper {
@@ -21,13 +40,16 @@ body {
 /* header */
 .site-header {
   text-align: center;
-  padding-top: 50px;
+  padding-top: 40px;
+  color: var(--black);
+  border-bottom: 1px solid var(--gold);
 }
 
 .site-title {
-  font-size: 22px;
-  font-weight: 500;
-  margin-bottom: 10px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--black);
 }
 
 /* chat window */
@@ -35,14 +57,16 @@ body {
   margin: 40px 0;
 }
 
+
 .chat-window {
   height: 360px;
-  border: 1px solid #000;
+  border: 2px solid var(--gold);
   padding: 20px;
   font-size: 18px;
-  line-height: 1.5;
+  background: var(--white);
   overflow-y: auto;
-  background: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   white-space: pre-line;
 }
 
@@ -53,11 +77,15 @@ body {
 }
 
 .msg.user {
-  color: #000;
+  color: var(--black);
+  font-weight: 500;
 }
 
 .msg.ai {
-  color: #666666;
+  color: #666;
+  background: #f6f6f6;
+  padding: 10px;
+  border-radius: 6px;
 }
 
 /* input row */
@@ -69,9 +97,10 @@ body {
 
 .chat-form input {
   flex: 1;
-  padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gold);
   font-size: 18px;
+  padding: 10px;
+  border-radius: 4px;
 }
 
 .chat-form input:focus {
@@ -81,9 +110,10 @@ body {
 
 .chat-form button {
   font-size: 18px;
-  background: #000;
-  color: #fff;
+  background: var(--black);
+  color: var(--white);
   border: none;
+  border-radius: 4px;
   padding: 12px;
   width: 48px;
   height: 48px;
@@ -99,7 +129,8 @@ body {
 }
 
 .chat-form button:hover {
-  background: #666666;
+  background: var(--red);
+
 }
 
 .chat-form button:focus {
@@ -125,7 +156,9 @@ body {
   margin: 60px 0 40px;
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: #888;
+  border-top: 1px solid var(--gold);
+  padding-top: 20px;
 }
 
 .site-footer nav {
@@ -141,3 +174,197 @@ body {
 .site-footer a:hover {
   color: #666666;
 }
+
+
+/* ——— Loading Screen Styling ——— */
+#loadingScreen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  transition: opacity 1.5s ease;
+  background-color: black;
+}
+
+/* ——— L'Oréal Intro Animation ——— */
+#introOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 1.5s ease;
+  animation: none; /* remove abrupt fadeOutIntro */}
+
+.circle-art {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 125vmin;
+  height: 125vmin;
+}
+
+.circle-art circle {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  opacity: 0;
+  animation: ringGrow 0.8s ease forwards;
+}
+
+.circle-art circle:nth-child(1) { animation-delay: 0s; }
+.circle-art circle:nth-child(2) { animation-delay: 0.3s; }
+.circle-art circle:nth-child(3) { animation-delay: 0.6s; }
+.circle-art circle:nth-child(4) { animation-delay: 0.9s; }
+.circle-art circle:nth-child(5) { animation-delay: 1.2s; }
+
+
+@keyframes ringGrow {
+  from { r: 0; opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Add fade out for circles */
+.circle-art circle.fade-out {
+  animation: ringFadeOut 1s ease forwards;
+}
+
+@keyframes ringFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+.logo-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.1rem;
+  color: #fff;
+  z-index: 15;
+  opacity: 0;
+  animation: fadeInLogo 1s ease 2s forwards, fadeOutLogo 1s ease 4s forwards;
+  animation: fadeInLogo 1s ease 2s forwards, fadeOutLogo 1s ease 4s forwards, scaleUp 1.5s ease 2s forwards;
+}
+
+.optical-o {
+  display: inline-block;
+  transform: scale(1.2); /* Tweak until it feels right */
+  transform-origin: center;
+}
+
+
+@keyframes scaleUp {
+  from { transform: translate(-50%, -50%) scale(0.8); }
+  to { transform: translate(-50%, -50%) scale(1); }
+}
+
+.tagline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  flex-wrap: nowrap;       /* Keep all spans in one row */
+  white-space: nowrap;     /* Prevent line breaks */
+  gap: 0.2em;              /* Optional spacing between letters */
+  font-family: 'Work Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  animation: fadeInTagline 1.5s ease 5.5s forwards;
+}
+
+.tagline span {
+  opacity: 0;
+}
+.fade-in {
+  animation: letterFadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeInTagline {
+  to { opacity: 1; }
+}
+
+@keyframes letterFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+
+.typewriter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.25em;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  opacity: 0;
+  z-index: 15;
+  border-right: none; /* ← removes the blinker */
+  animation:
+    fadeInTagline 0s ease 6s forwards,
+    typing 4s steps(44, end) 6s forwards;
+}
+
+
+@keyframes fadeInTagline {
+  to { opacity: 1; }
+}
+
+
+@keyframes typing {
+  to { width: 46ch; } /* Stops it from stretching across screen */
+}
+
+@keyframes letterFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes fadeInLogo {
+  to { opacity: 1; }
+}
+
+@keyframes fadeOutLogo {
+  to { opacity: 0; }
+}
+
+@keyframes showTagline {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes glow {
+  0%, 100% { text-shadow: none; }
+  50% { text-shadow: 0 0 10px gold; }
+}
+
+
+
+
