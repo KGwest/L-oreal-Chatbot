@@ -20,7 +20,10 @@ window.addEventListener("DOMContentLoaded", () => {
   function markdownToHTML(mdText) {
     return mdText
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(
+        /\[(.*?)\]\((.*?)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>'
+      )
       .replace(/\n/g, "<br>");
   }
 
@@ -40,11 +43,14 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
 
     try {
-      const response = await fetch("https://sweet-credit-1696.kezia-west.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages }),
-      });
+      const response = await fetch(
+        "https://sweet-credit-1696.kezia-west.workers.dev",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages }),
+        }
+      );
 
       const data = await response.json();
       let aiReply = data.reply || "";
@@ -52,7 +58,10 @@ window.addEventListener("DOMContentLoaded", () => {
       const fallback = `🤔 Hmm… that’s outside my area of glam!  
 If you need help with beauty routines, product picks, or finding your perfect shade, I’m here for you 💄✨`;
 
-      const invalid = !aiReply || aiReply.toLowerCase().includes("sorry") || aiReply.length < 20;
+      const invalid =
+        !aiReply ||
+        aiReply.toLowerCase().includes("sorry") ||
+        aiReply.length < 20;
 
       if (invalid) aiReply = fallback;
 
@@ -83,23 +92,42 @@ If you need help with beauty routines, product picks, or finding your perfect sh
 // INTRO ANIMATION (keep outside DOMContentLoaded)
 window.addEventListener("load", () => {
   const overlay = document.getElementById("introOverlay");
-
   const circles = document.querySelectorAll(".circle-art circle");
+  const tagline = document.querySelector(".tagline");
   const taglineLetters = document.querySelectorAll(".tagline span");
 
+  // Step 1: Animate circles fading out
   setTimeout(() => {
     [...circles].reverse().forEach((circle, i) => {
       setTimeout(() => circle.classList.add("fade-out"), i * 200);
     });
   }, 4500);
 
+  // Step 2: Animate tagline letter-by-letter fade in
   setTimeout(() => {
+    if (tagline) tagline.style.opacity = "1"; // ensure it's visible
     taglineLetters.forEach((letter) => {
-      const randomDelay = Math.floor(Math.random() * 1000);
+      const randomDelay = Math.floor(Math.random() * 800);
       setTimeout(() => letter.classList.add("fade-in"), randomDelay);
     });
   }, 5500);
 
+  // Step 3: Add fade-out transition to the tagline
+  setTimeout(() => {
+    if (tagline) {
+      tagline.style.transition = "opacity 1s ease";
+      tagline.style.opacity = "0"; // fades it out smoothly
+    }
+  }, 8500); // begin fading out before overlay ends
+
+  // Step 4: Fully hide tagline from layout after fade completes
+  setTimeout(() => {
+    if (tagline) {
+      tagline.style.display = "none"; // removes space it occupied
+    }
+  }, 9500);
+
+  // Step 5: Fade out the entire overlay
   setTimeout(() => {
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";

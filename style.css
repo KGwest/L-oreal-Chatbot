@@ -17,6 +17,22 @@
   padding: 0;
 }
 
+.branding.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+
+.loreal-logo {
+  height: 48px;
+  object-fit: contain;
+  filter: grayscale(100%) contrast(150%);
+}
+
+
 /* —— body + fonts —— */
 body {
   font-family: 'Poppins', "Montserrat", Arial, Helvetica, sans-serif;
@@ -47,8 +63,9 @@ body {
 
 .site-title {
   font-size: 26px;
+  font-family: 'Playfair Display', serif;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.03em;
   color: var(--black);
 }
 
@@ -86,6 +103,7 @@ body {
   background: #f6f6f6;
   padding: 10px;
   border-radius: 6px;
+  font-family: 'Oxygen', sans-serif;
 }
 
 /* input row */
@@ -93,12 +111,15 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 16px;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .chat-form input {
   flex: 1;
   border: 1px solid var(--gold);
   font-size: 18px;
+  font-family: 'Poppins', sans-serif;
   padding: 10px;
   border-radius: 4px;
 }
@@ -110,18 +131,23 @@ body {
 
 .chat-form button {
   font-size: 18px;
+  font-family: 'Poppins', sans-serif;
   background: var(--black);
   color: var(--white);
   border: none;
   border-radius: 4px;
-  padding: 12px;
-  width: 48px;
-  height: 48px;
+  padding: 0; /* Remove extra padding */
+  min-width: 48px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background 0.3s;
+}
+
+.material-icons {
+  font-size: 24px;
 }
 
 .chat-form button .material-icons {
@@ -156,6 +182,7 @@ body {
   margin: 60px 0 40px;
   text-align: center;
   font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
   color: #888;
   border-top: 1px solid var(--gold);
   padding-top: 20px;
@@ -169,6 +196,8 @@ body {
   margin: 0 8px;
   color: #000;
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .site-footer a:hover {
@@ -282,6 +311,7 @@ body {
   display: flex;
   justify-content: center;
   opacity: 0;
+  transition: opacity 1s ease;
   flex-wrap: nowrap;       /* Keep all spans in one row */
   white-space: nowrap;     /* Prevent line breaks */
   gap: 0.2em;              /* Optional spacing between letters */
@@ -305,6 +335,8 @@ body {
 .circle-container.fade-out {
   opacity: 0;
   transition: opacity 1s ease;
+  pointer-events: none;
+  display: none;  /* ← Add this */
 }
 
 .tagline span {
@@ -437,5 +469,19 @@ body {
   40% {
     transform: scale(1.2);
     opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-title {
+    font-size: 20px;
+  }
+
+  .loreal-logo {
+    height: 40px;
+  }
+
+  .chat-form input {
+    font-size: 16px;
   }
 }
