@@ -202,8 +202,8 @@ body {
   z-index: 9999;
   opacity: 1;
   pointer-events: all;
-  transition: opacity 1.5s ease;
-  animation: none; /* remove abrupt fadeOutIntro */}
+  transition: opacity 1s ease;
+  animation: ease-out /* remove abrupt fadeOutIntro */}
 
 .circle-art {
   position: absolute;
@@ -291,23 +291,37 @@ body {
   animation: fadeInTagline 1.5s ease 5.5s forwards;
 }
 
+.circle-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.circle-container.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
 .tagline span {
   opacity: 0;
+  transform: translateY(10px); /* <-- start slightly below */
+  transition: all 0.5s ease;
+} 
+
+.tagline span.fade-in {
+  opacity: 1;
+  transform: translateY(0);     /* <-- slide into place */
+  animation: letterFadeIn 0.5s ease forwards;
+
 }
 .fade-in {
   animation: letterFadeIn 0.5s ease forwards;
 }
-
-@keyframes fadeInTagline {
-  to { opacity: 1; }
-}
-
-@keyframes letterFadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
 
 .typewriter {
   position: absolute;
@@ -329,23 +343,23 @@ body {
     typing 4s steps(44, end) 6s forwards;
 }
 
-
 @keyframes fadeInTagline {
   to { opacity: 1; }
 }
 
-
 @keyframes typing {
   to { width: 46ch; } /* Stops it from stretching across screen */
 }
-
 @keyframes letterFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
 
 @keyframes fadeInLogo {
   to { opacity: 1; }
@@ -365,6 +379,63 @@ body {
   50% { text-shadow: 0 0 10px gold; }
 }
 
+.msg.ai {
+  background-color: #FFF9F3; /* soft neutral gold tone */
+  border-left: 4px solid #E2BA35;
+  color: #000000;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Oxygen', sans-serif;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Style any links in the AI message */
+.msg.ai a {
+  color: #FF003B;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.msg.ai a:hover {
+  text-decoration: underline;
+}
 
 
+.msg.ai.thinking {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  background: #f6f6f6;
+  border-radius: 6px;
+  font-size: 24px;
+  color: var(--black);
+  font-weight: bold;
+}
 
+.msg.ai.thinking .dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--gold);
+  border-radius: 50%;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.msg.ai.thinking .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.msg.ai.thinking .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

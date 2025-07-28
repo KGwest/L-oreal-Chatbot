@@ -1,40 +1,89 @@
-// DOM references
-const chatForm = document.getElementById("chatForm");
-const userInput = document.getElementById("userInput");
-const chatWindow = document.getElementById("chatWindow");
+import "./prompt.js";
 
-// Store full chat history
-let messages = [
-  {
-    role: "system",
-    content:
-      "You are a helpful beauty consultant for L’Oréal. Only answer questions about L’Oréal products, skincare, makeup, haircare, fragrances, and beauty routines. Kindly refuse off-topic requests.",
-  },
-];
+window.addEventListener("DOMContentLoaded", () => {
+  const chatForm = document.getElementById("chatForm");
+  const userInput = document.getElementById("userInput");
+  const chatWindow = document.getElementById("chatWindow");
 
-// Set initial message
-chatWindow.textContent = "👋 Hello! How can I help you today?";
+  let messages = [window.systemPrompt];
 
-// Append message to chat UI
-function appendMessage(role, text) {
-  const msg = document.createElement("div");
-  msg.className = `msg ${role}`;
-  msg.textContent = text;
-  chatWindow.appendChild(msg);
-  chatWindow.scrollTop = chatWindow.scrollHeight;
-}
+  chatWindow.textContent = "👋 Hello! How can I help you today?";
 
-/* Intro overlay animation */
+  function appendMessage(role, text) {
+    const msg = document.createElement("div");
+    msg.className = `msg ${role}`;
+    msg.innerHTML = markdownToHTML(text);
+    chatWindow.appendChild(msg);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function markdownToHTML(mdText) {
+    return mdText
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\n/g, "<br>");
+  }
+
+  async function getAIResponse(userMessage) {
+    messages.push({ role: "user", content: userMessage });
+
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "msg ai thinking";
+
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElement("div");
+      dot.className = "dot";
+      loadingMsg.appendChild(dot);
+    }
+
+    chatWindow.appendChild(loadingMsg);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    try {
+      const response = await fetch("https://sweet-credit-1696.kezia-west.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages }),
+      });
+
+      const data = await response.json();
+      let aiReply = data.reply || "";
+
+      const fallback = `🤔 Hmm… that’s outside my area of glam!  
+If you need help with beauty routines, product picks, or finding your perfect shade, I’m here for you 💄✨`;
+
+      const invalid = !aiReply || aiReply.toLowerCase().includes("sorry") || aiReply.length < 20;
+
+      if (invalid) aiReply = fallback;
+
+      messages.push({ role: "assistant", content: aiReply });
+
+      chatWindow.removeChild(loadingMsg);
+      return aiReply;
+    } catch (err) {
+      console.error("Worker fetch failed:", err);
+      chatWindow.removeChild(loadingMsg);
+      return "😓 Something went wrong. Please try again!";
+    }
+  }
+
+  chatForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const userText = userInput.value.trim();
+    if (!userText) return;
+
+    appendMessage("user", userText);
+    userInput.value = "";
+
+    const botResponse = await getAIResponse(userText);
+    appendMessage("ai", botResponse);
+  });
+});
+
+// INTRO ANIMATION (keep outside DOMContentLoaded)
 window.addEventListener("load", () => {
   const overlay = document.getElementById("introOverlay");
 
-  const hasSeenIntro = localStorage.getItem("hasSeenIntro");
-  if (hasSeenIntro === "true") {
-    overlay.remove();
-    return;
-  }
-
-  // Animation: fade out circles and fade in letters
   const circles = document.querySelectorAll(".circle-art circle");
   const taglineLetters = document.querySelectorAll(".tagline span");
 
@@ -57,41 +106,4 @@ window.addEventListener("load", () => {
     overlay.style.zIndex = "-9999";
     setTimeout(() => overlay.remove(), 1500);
   }, 10000);
-  localStorage.setItem("hasSeenIntro", "true");
 });
-
-// CHAT FUNCTIONALITY
-chatForm.addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const userText = userInput.value.trim();
-  if (!userText) return;
-
-  appendMessage("user", userText);
-  userInput.value = "";
-
-  const botResponse = await getAIResponse(userText);
-  appendMessage("ai", botResponse);
-});
-
-async function getAIResponse(userMessage) {
-  messages.push({ role: "user", content: userMessage });
-
-  try {
-    const response = await fetch("https://sweet-credit-1696.kezia-west.workers.dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ messages }) // THIS is key — must wrap it in `{ messages }`
-    });
-
-    const data = await response.json();
-    const aiReply = data.reply || "🤖 Sorry, no response received.";
-    messages.push({ role: "assistant", content: aiReply });
-
-    return aiReply;
-  } catch (err) {
-    console.error("Worker fetch failed:", err);
-    return "🚨 There was a problem connecting to the chatbot.";
-  }
-}
